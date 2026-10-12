@@ -6,13 +6,13 @@
 <title>Scale Logger</title>
 <style>
 :root{
-  --bg:#f6f4f9; --panel:#ffffff; --head:#e9e4f0; --line:#d3cbe0; --alt:#f3f0f8;
-  --ink:#2c1c47; --mute:#6b6280; --acc:#2c1c47; --acc2:#4a3470; --accink:#ffffff;
+  --bg:#FFFFFF; --panel:#ffffff; --head:#E3E7F2; --line:#C5CDE3; --alt:#F2F4FA;
+  --ink:#221E32; --mute:#5A5670; --acc:#291E44; --acc2:#53478A; --accink:#ffffff;
   --warn:#fff1cf; --warnink:#6e4a00; --bad:#fde1e6; --badink:#8c1d37; --ok:#e0f4e6; --okink:#1b6b3a;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,"Segoe UI",Roboto,Arial,sans-serif}
-header{display:flex;align-items:center;gap:14px;padding:10px 20px;background:#fff;color:var(--ink);border-bottom:3px solid var(--acc)}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Arial,"Helvetica Neue",Helvetica,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:10px 20px;background:#fff;color:var(--ink);border-bottom:4px solid #221E32}
 header img{height:44px;width:auto;display:block}
 header h1{margin:0;font-size:18px;font-weight:600;letter-spacing:.2px;padding-left:14px;border-left:1px solid var(--line)}
 .pill{padding:2px 12px;border-radius:99px;background:var(--head);color:var(--mute);font-size:12.5px;margin-left:auto}
@@ -51,16 +51,16 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 #chart{width:100%;height:210px;display:block}
 .tablewrap{max-height:380px;overflow:auto}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
-th,td{padding:5px 9px;border-bottom:1px solid #e6e1ee;text-align:right;white-space:nowrap}
+th,td{padding:5px 9px;border-bottom:1px solid #E3E7F2;text-align:right;white-space:nowrap}
 th{position:sticky;top:0;background:var(--head);font-weight:600;font-size:12.5px;z-index:1}
 td:nth-child(2),td:nth-child(3),th:nth-child(2),th:nth-child(3),td:last-child,th:last-child{text-align:left}
 tbody tr:nth-child(even){background:var(--alt)}
-tr.ex td{color:#9a8fb3;text-decoration:line-through}
+tr.ex td{color:#8F9BBF;text-decoration:line-through}
 tr.ex td:nth-child(9),tr.ex td:last-child{text-decoration:none}
 td.net{font-weight:600}
 td input[type=text]{min-width:180px;padding:3px 6px}
 td input[type=checkbox]{width:auto}
-pre{margin:0;padding:10px 14px;background:#faf8fe;font:12.5px/1.4 ui-monospace,Consolas,monospace;max-height:230px;overflow:auto;white-space:pre-wrap}
+pre{margin:0;padding:10px 14px;background:#F7F8FC;font:12.5px/1.4 ui-monospace,Consolas,monospace;max-height:230px;overflow:auto;white-space:pre-wrap}
 details summary{cursor:pointer;padding:8px 14px;font-weight:600;background:var(--head)}
 details .pad ol{margin:6px 0 6px 18px;padding:0}
 .empty{padding:22px;text-align:center;color:var(--mute)}
