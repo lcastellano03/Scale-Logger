@@ -6,15 +6,16 @@
 <title>Scale Logger</title>
 <style>
 :root{
-  --bg:#f5f1fc; --panel:#ffffff; --head:#e4d9f6; --line:#cdbcea; --alt:#f1ebfb;
-  --ink:#2b2142; --mute:#6a5d88; --acc:#5f41b8; --acc2:#7d62d0; --accink:#ffffff;
+  --bg:#f6f4f9; --panel:#ffffff; --head:#e9e4f0; --line:#d3cbe0; --alt:#f3f0f8;
+  --ink:#2c1c47; --mute:#6b6280; --acc:#2c1c47; --acc2:#4a3470; --accink:#ffffff;
   --warn:#fff1cf; --warnink:#6e4a00; --bad:#fde1e6; --badink:#8c1d37; --ok:#e0f4e6; --okink:#1b6b3a;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,"Segoe UI",Roboto,Arial,sans-serif}
-header{display:flex;align-items:center;gap:14px;padding:12px 20px;background:var(--acc);color:var(--accink)}
-header h1{margin:0;font-size:18px;font-weight:600;letter-spacing:.2px}
-.pill{padding:2px 12px;border-radius:99px;background:rgba(255,255,255,.2);font-size:12.5px}
+header{display:flex;align-items:center;gap:14px;padding:10px 20px;background:#fff;color:var(--ink);border-bottom:3px solid var(--acc)}
+header img{height:44px;width:auto;display:block}
+header h1{margin:0;font-size:18px;font-weight:600;letter-spacing:.2px;padding-left:14px;border-left:1px solid var(--line)}
+.pill{padding:2px 12px;border-radius:99px;background:var(--head);color:var(--mute);font-size:12.5px;margin-left:auto}
 .pill.on{background:#d9f5e3;color:#14562f}
 .pill.sim{background:#fff1cf;color:#6e4a00}
 .banner{margin:12px 20px 0;padding:10px 14px;border-radius:8px;background:var(--warn);color:var(--warnink);border:1px solid #ecd28f}
@@ -50,7 +51,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 #chart{width:100%;height:210px;display:block}
 .tablewrap{max-height:380px;overflow:auto}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
-th,td{padding:5px 9px;border-bottom:1px solid #e6dcf5;text-align:right;white-space:nowrap}
+th,td{padding:5px 9px;border-bottom:1px solid #e6e1ee;text-align:right;white-space:nowrap}
 th{position:sticky;top:0;background:var(--head);font-weight:600;font-size:12.5px;z-index:1}
 td:nth-child(2),td:nth-child(3),th:nth-child(2),th:nth-child(3),td:last-child,th:last-child{text-align:left}
 tbody tr:nth-child(even){background:var(--alt)}
@@ -69,6 +70,7 @@ details .pad ol{margin:6px 0 6px 18px;padding:0}
 </head>
 <body>
 <header>
+  <img src="logo.png" alt="Unusual Machines" width="179" height="44">
   <h1>Scale Logger</h1>
   <span id="status" class="pill">Disconnected</span>
 </header>
@@ -443,7 +445,7 @@ function drawChart() {
   c.width = w * dpr; c.height = h * dpr;
   const x = c.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, h);
   x.font = "11px system-ui,sans-serif";
-  if (!S.rows.length) { x.fillStyle = "#6a5d88"; x.textAlign = "center"; x.fillText("Individuals chart appears here", w / 2, h / 2); return; }
+  if (!S.rows.length) { x.fillStyle = "#6b6280"; x.textAlign = "center"; x.fillText("Individuals chart appears here", w / 2, h / 2); return; }
   const k = K(), pts = S.rows.map(r => ({ y: r.net * k, ex: r.ex })), used = pts.filter(p => !p.ex).map(p => p.y);
   let mean = null, ucl = null, lcl = null;
   if (used.length >= 2) {
@@ -454,13 +456,13 @@ function drawChart() {
   let lo = Math.min(...all), hi = Math.max(...all); if (hi === lo) { hi += 1; lo -= 1; }
   const padv = (hi - lo) * 0.08; lo -= padv; hi += padv;
   const L = 52, R = 10, T = 10, B = 20, X = i => L + (pts.length < 2 ? (w - L - R) / 2 : i * (w - L - R) / (pts.length - 1)), Y = v => T + (hi - v) / (hi - lo) * (h - T - B);
-  x.strokeStyle = "#e6dcf5"; x.fillStyle = "#6a5d88"; x.textAlign = "right";
+  x.strokeStyle = "#e6e1ee"; x.fillStyle = "#6b6280"; x.textAlign = "right";
   for (let i = 0; i <= 4; i++) { const v = lo + (hi - lo) * i / 4, yy = Y(v); x.beginPath(); x.moveTo(L, yy); x.lineTo(w - R, yy); x.stroke(); x.fillText(v.toFixed(k === 1000 ? 1 : 4), L - 5, yy + 4); }
   const hl = (v, col, dash) => { if (v == null) return; x.strokeStyle = col; x.setLineDash(dash); x.beginPath(); x.moveTo(L, Y(v)); x.lineTo(w - R, Y(v)); x.stroke(); x.setLineDash([]); };
-  hl(mean, "#8b7bb5", []); hl(ucl, "#b5456a", [5, 4]); hl(lcl, "#b5456a", [5, 4]);
-  x.strokeStyle = "#5f41b8"; x.lineWidth = 1.4; x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(X(i), Y(p.y)) : x.moveTo(X(i), Y(p.y))); x.stroke(); x.lineWidth = 1;
-  pts.forEach((p, i) => { x.beginPath(); x.arc(X(i), Y(p.y), 3.2, 0, 7); if (p.ex) { x.fillStyle = "#fff"; x.fill(); x.strokeStyle = "#9a8fb3"; x.stroke(); } else { x.fillStyle = (ucl != null && (p.y > ucl || p.y < lcl)) ? "#b5456a" : "#5f41b8"; x.fill(); } });
-  x.fillStyle = "#6a5d88"; x.textAlign = "left"; x.fillText(`${uLab()} per part` + (ucl != null ? "  ·  dashed = limits from moving range" : ""), L, h - 5);
+  hl(mean, "#7a6b9a", []); hl(ucl, "#b5456a", [5, 4]); hl(lcl, "#b5456a", [5, 4]);
+  x.strokeStyle = "#2c1c47"; x.lineWidth = 1.4; x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(X(i), Y(p.y)) : x.moveTo(X(i), Y(p.y))); x.stroke(); x.lineWidth = 1;
+  pts.forEach((p, i) => { x.beginPath(); x.arc(X(i), Y(p.y), 3.2, 0, 7); if (p.ex) { x.fillStyle = "#fff"; x.fill(); x.strokeStyle = "#9a8fb3"; x.stroke(); } else { x.fillStyle = (ucl != null && (p.y > ucl || p.y < lcl)) ? "#b5456a" : "#2c1c47"; x.fill(); } });
+  x.fillStyle = "#6b6280"; x.textAlign = "left"; x.fillText(`${uLab()} per part` + (ucl != null ? "  ·  dashed = limits from moving range" : ""), L, h - 5);
 }
 
 /* ------------------------------------------------------------ export */
